@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      font-size: 14px;
+      color: #333;
+      padding: 40px;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 40px;
+    }
+
+    .invoice-number {
+      font-size: 14px;
+      color: #666;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 24px 0;
+    }
+
+    th {
+      background: #f5f5f5;
+      padding: 10px;
+      text-align: left;
+      font-size: 12px;
+    }
+
+    tr {
+      break-inside: avoid;
+    }
+
+    td {
+      padding: 10px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .total-row td {
+      font-weight: 700;
+      font-size: 16px;
+      border-top: 2px solid #333;
+    }
+
+    .report-title {
+      font-size: 24px;
+      font-weight: 700;
+    }
+
+    .report-date {
+      font-size: 14px;
+      color: #666;
+    }
+
+    h2 {
+      font-size: 18px;
+      margin-top: 32px;
+      margin-bottom: 8px;
+    }
+
+    .long-table td {
+      font-size: 12px;
+      padding: 6px 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="header">
+    <div>
+      <div class="report-title">Books Report</div>
+      <div class="report-date">{{today}}</div>
+    </div>
+
+    <div>
+      <div class="invoice-number">Invoice #{{invoice.number}}</div>
+      <div>Total Books: {{totalNumberOfBooks}}</div>
+      <div>Avg Price: {{averagePrice}}</div>
+    </div>
+  </div>
+
+  <h2>Top 5 Most Expensive Books</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Title</th>
+        <th>Rating</th>
+        <th>Price (£)</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each top5expensiveBooks}}
+      <tr>
+        <td>{{inc @index}}</td>
+        <td>{{title}}</td>
+        <td>{{rating}}</td>
+        <td>{{price}}</td>
+      </tr>
+      {{/each}}
+      <tr class="total-row">
+        <td colspan="3">Total</td>
+        <td>{{sumTop5Prices}}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>All Books</h2>
+  <table class="long-table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Title</th>
+        <th>Rating</th>
+        <th>Price (£)</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each allBooks}}
+      <tr>
+        <td>{{inc @index}}</td>
+        <td>{{title}}</td>
+        <td>{{rating}}</td>
+        <td>{{price}}</td>
+      </tr>
+      {{/each}}
+      <tr class="total-row">
+        <td colspan="3">Total</td>
+        <td>{{sumAllPrices}}</td>
+      </tr>
+    </tbody>
+  </table>
+</body>
+
+</html>

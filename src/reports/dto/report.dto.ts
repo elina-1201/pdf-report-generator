@@ -1,6 +1,8 @@
+import { Book } from "../book.entity";
+
 export class ReportDTO {
     totalNumberOfBooks!: number;
     averagePrice!: number;
-    top5expensiveTitles!: string[];
-    numOfBooksPerRating!: Map<string, number>[];
+    top5expensiveBooks!: Book[];
+    numOfBooksPerRating!: { rating: number; count: number }[];
 }

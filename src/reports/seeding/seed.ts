@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import process from 'node:process';
 import { DataSource } from 'typeorm';
-import { Book } from './book.entity';
+import { Book } from '../book.entity';
 
 interface BookJson {
     title: string;

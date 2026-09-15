@@ -23,6 +23,12 @@ importers:
       better-sqlite3:
         specifier: ^12.11.1
         version: 12.11.1
+      handlebars:
+        specifier: ^4.7.9
+        version: 4.7.9
+      playwright:
+        specifier: ^1.63.0
+        version: 1.63.0
       reflect-metadata:
         specifier: ^0.2.2
         version: 0.2.2

@@ -1,6 +1,8 @@
 #SQLite database files
 *.db
 
+*.pdf
+
 # compiled output
 /dist
 /node_modules
