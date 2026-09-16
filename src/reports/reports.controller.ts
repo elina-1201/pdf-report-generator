@@ -30,13 +30,16 @@ export class ReportsController {
 
     @Get(':id/file')
     async getReportFile(@Param('id') id: string): Promise<StreamableFile> {
-        await this.reportsService.getReportById(id);
+        void (await this.reportsService.getReportById(id));
 
         if (!this.storage.exists(id)) {
             throw new NotFoundException(`PDF for report ${id} not found on disk`);
         }
 
-        return new StreamableFile(this.storage.createReadStream(id), { type: 'application/pdf' });
+        return new StreamableFile(this.storage.createReadStream(id), {
+            type: 'application/pdf',
+            disposition: `attachment; filename="report-${id}.pdf"`,
+        });
     }
 
 }

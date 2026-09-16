@@ -23,7 +23,7 @@ pnpm start:dev  # starts the API (default port 3000)
 | --- | --- |
 | `POST /reports` | Generates today's report; returns `201` with the report id (or `200` if today's report already exists). Pass `{ "force": true }` to regenerate anyway. |
 | `GET /reports/:id` | Report metadata. |
-| `GET /reports/:id/file` | The rendered PDF. |
+| `GET /reports/:id/file` | The rendered PDF, with `Content-Disposition: attachment` so it downloads automatically. |
 
 ## Dataset
 
@@ -96,6 +96,23 @@ Date: Wed, 16 Sep 2026 13:31:21 GMT
 
 {"id":"cd0c6a3f-f595-42e5-992a-12959fa12096","file":"/reports/cd0c6a3f-f595-42e5-992a-12959fa12096/file"}
 ```
+
+### 4. `GET /reports/:id/file`: the PDF downloads automatically
+
+The PDF is streamed with `Content-Disposition: attachment`, so opening the URL in a browser (or `curl`) downloads the file instead of rendering it inline. Here the response headers and the saved file are shown together:
+
+```bash
+curl -D - -o downloaded-report.pdf http://localhost:3000/reports/9db6184a-6e1a-42fb-87ce-008cb0ed6f67/file
+```
+
+```text
+HTTP/1.1 200 OK
+Content-Type: application/pdf
+Content-Disposition: attachment; filename="report-9db6184a-6e1a-42fb-87ce-008cb0ed6f67.pdf"
+Date: Wed, 16 Sep 2026 13:55:50 GMT
+Transfer-Encoding: chunked
+```
+
 ## Generated PDF
 
 <p align="center">
