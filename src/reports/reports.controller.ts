@@ -1,4 +1,5 @@
-import { Controller, Get, NotFoundException, Param, Post, StreamableFile } from '@nestjs/common';
+import { Body, Controller, Get, NotFoundException, Param, Post, Res, StreamableFile } from '@nestjs/common';
+import type { Response } from 'express';
 import { ReportSummaryDTO } from './dto/report.dto';
 import { ReportStorageService } from './report-storage.service';
 import { ReportsService } from './reports.service';
@@ -11,8 +12,12 @@ export class ReportsController {
     ) { }
 
     @Post()
-    async generateReport(): Promise<ReportSummaryDTO> {
-        const report = await this.reportsService.createReport();
+    async generateReport(
+        @Res({ passthrough: true }) response: Response,
+        @Body() body: { force: boolean }
+    ): Promise<ReportSummaryDTO> {
+        const { created, report } = (await this.reportsService.createReport(body));
+        response.status(created ? 201 : 200);
         return ReportSummaryDTO.from(report.id);
     }
 

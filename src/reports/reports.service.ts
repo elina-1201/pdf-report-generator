@@ -20,7 +20,12 @@ export class ReportsService {
         private readonly reportTemplate: ReportTemplateService,
     ) { }
 
-    async createReport(): Promise<Report> {
+    async createReport(body: { force: boolean }): Promise<{ created: boolean, report: Report }> {
+        const existingReport = await this.todaysReport();
+        if (existingReport && !body.force) {
+            return { created: false, report: existingReport };
+        }
+
         const id = randomUUID();
 
         const data = await this.reportData.getReportData();
@@ -28,13 +33,16 @@ export class ReportsService {
         try {
             await this.generatePdfReport(data, id);
 
-            return await this.reportRepository.save(
-                this.reportRepository.create({
-                    id,
-                    path: this.storage.storedPath(id),
-                    createdAt: Date.now(),
-                }),
-            );
+            return {
+                created: true,
+                report: await this.reportRepository.save(
+                    this.reportRepository.create({
+                        id,
+                        path: this.storage.storedPath(id),
+                        createdAt: Date.now(),
+                    }),
+                )
+            };
         } catch (error) {
             await this.storage.remove(id);
             throw error;
@@ -54,5 +62,17 @@ export class ReportsService {
             throw new NotFoundException(`Report with ID ${reportId} not found`);
         }
         return report;
+    }
+
+    private async todaysReport(): Promise<Report | null> {
+        const startOfToday = new Date();
+        startOfToday.setHours(0, 0, 0, 0);
+
+        const todaysReport = await this.reportRepository
+            .createQueryBuilder('report')
+            .where('report.createdAt >= :start', { start: startOfToday.getTime() })
+            .getOne();
+
+        return todaysReport;
     }
 }
