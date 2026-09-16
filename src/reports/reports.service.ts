@@ -20,7 +20,7 @@ export class ReportsService {
         private readonly reportTemplate: ReportTemplateService,
     ) { }
 
-    async createReport(body: { force: boolean }): Promise<{ created: boolean, report: Report }> {
+    async createReport(body: { force?: boolean } = {}): Promise<{ created: boolean, report: Report }> {
         const existingReport = await this.todaysReport();
         if (existingReport && !body.force) {
             return { created: false, report: existingReport };
