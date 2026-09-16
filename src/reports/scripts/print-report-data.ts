@@ -1,15 +1,15 @@
-// src/reports/test-report.ts
+// Prints the aggregated report data as JSON. Usage: pnpm report:data
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from '../app.module';
-import { ReportsService } from './reports.service';
+import { AppModule } from '../../app.module';
+import { ReportDataService } from '../report-data.service';
 
 async function main(): Promise<void> {
     const app = await NestFactory.createApplicationContext(AppModule, {
         logger: false,
     });
 
-    const reports = app.get(ReportsService);
-    const data = await reports.getReportData();
+    const reportDataService = app.get(ReportDataService);
+    const data = await reportDataService.getReportData();
     console.log(JSON.stringify(data, null, 2));
 
     await app.close();

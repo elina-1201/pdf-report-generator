@@ -23,11 +23,6 @@
       margin-bottom: 40px;
     }
 
-    .invoice-number {
-      font-size: 14px;
-      color: #666;
-    }
-
     table {
       width: 100%;
       border-collapse: collapse;
@@ -87,7 +82,6 @@
     </div>
 
     <div>
-      <div class="invoice-number">Invoice #{{invoice.number}}</div>
       <div>Total Books: {{totalNumberOfBooks}}</div>
       <div>Avg Price: {{averagePrice}}</div>
     </div>
@@ -106,7 +100,7 @@
     <tbody>
       {{#each top5expensiveBooks}}
       <tr>
-        <td>{{inc @index}}</td>
+        <td>{{rank}}</td>
         <td>{{title}}</td>
         <td>{{rating}}</td>
         <td>{{price}}</td>
@@ -115,6 +109,28 @@
       <tr class="total-row">
         <td colspan="3">Total</td>
         <td>{{sumTop5Prices}}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>Books per Rating</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Rating</th>
+        <th>Number of Books</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each numOfBooksPerRating}}
+      <tr>
+        <td>{{rating}}</td>
+        <td>{{count}}</td>
+      </tr>
+      {{/each}}
+      <tr class="total-row">
+        <td>Total</td>
+        <td>{{totalNumberOfBooks}}</td>
       </tr>
     </tbody>
   </table>
@@ -132,7 +148,7 @@
     <tbody>
       {{#each allBooks}}
       <tr>
-        <td>{{inc @index}}</td>
+        <td>{{rank}}</td>
         <td>{{title}}</td>
         <td>{{rating}}</td>
         <td>{{price}}</td>

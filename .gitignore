@@ -1,7 +1,9 @@
 #SQLite database files
 *.db
 
+# PDF files
 *.pdf
+reports/*.pdf
 
 # compiled output
 /dist
